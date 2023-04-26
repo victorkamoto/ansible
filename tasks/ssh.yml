@@ -1,0 +1,30 @@
+- name: Ensure .ssh directory exists.
+  file:
+    dest: "{{ dest_key | dirname }}"
+    mode: 0700
+    state: directory
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+  tags:
+    - dotfiles
+    - install
+    - ssh
+- name: Install Private SSH Key
+  copy:
+    src: "{{ source_key }}"
+    dest: "{{ dest_key }}"
+    mode: 0600
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+  tags:
+    - dotfiles
+    - install
+    - ssh
+- name: Install Public SSH Key
+  copy:
+    src: "{{ source_key }}.pub"
+    dest: "{{ dest_key }}.pub"
+    mode: 0644
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+  tags:
+    - dotfiles
+    - install
+    - ssh
