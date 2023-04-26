@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == "--arch" ]]; then
+    docker build . -f arch.Dockerfile -t arch
+elif [[ "$1" == "--ubuntu" ]]; then
+    docker build . -f ubuntu.Dockerfile -t ubuntu
+else
+    docker build . -f arch.Dockerfile -t arch
+    docker build . -f ubuntu.Dockerfile -t ubuntu
+fi
+
