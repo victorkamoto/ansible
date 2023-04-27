@@ -27,8 +27,6 @@
   - name: include_tasks
     include_tasks: 
       file: "{{ item }}"
-      apply: 
-        become_user: vic
     loop:
     - tasks/ssh.yml
     - tasks/git.yml
