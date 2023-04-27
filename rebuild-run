@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == "--arch" ]]; then
+    docker build . -f arch.Dockerfile -t arch
+    docker run --rm -it arch bash
+elif [[ "$1" == "--ubuntu" ]]; then
+    docker build . -f ubuntu.Dockerfile -t ubuntu
+    docker run --rm -it ubuntu bash
+else
+    echo "No flag was passed. Please pass either --arch or --ubuntu flag."
+    exit 1
+fi
+
