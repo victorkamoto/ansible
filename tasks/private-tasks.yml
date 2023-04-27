@@ -1,0 +1,15 @@
+
+- name: Clone ansible-private repo
+  #  use shell instead of git module because of the private key issue
+  shell: git clone "{{ private_playbooks }}" "{{ lookup('env', 'HOME') }}/ansible-private"
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+  # git:
+  #   repo: "{{ private_playbooks }}"
+  #   dest: "{{ lookup('env', 'HOME') }}/ansible-private"
+  #   accept_hostkey: yes
+  #   key_file: "{{ dest_key }}"
+  tags:
+    - install
+    - core
+- name: Include private tasks
+  include_tasks: "{{ lookup('env', 'HOME') }}/ansible-private/{{ environ }}.yml"

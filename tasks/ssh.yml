@@ -28,3 +28,19 @@
     - dotfiles
     - install
     - ssh
+- name: Add remote host key to known-hosts
+  become: true
+  shell: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+  tags:
+    - dotfiles
+    - install
+    - ssh
+- name: Set authorized key from id_ed25519.pub
+  authorized_key:
+    user: "vic"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+
+      

@@ -12,21 +12,23 @@ RUN apt-get update && \
 
 FROM base AS personal
 ARG TAGS
+ARG YML
 RUN addgroup --gid 1000 vic
 RUN adduser --gecos vic --uid 1000 --gid 1000 --disabled-password vic
 RUN usermod -aG sudo vic
 RUN echo "vic ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/vic
 RUN chmod 0440 /etc/sudoers.d/vic
+
 RUN mkdir /home/vic/ansible
 WORKDIR /home/vic/ansible
 COPY . .
 RUN chmod 700 .ssh
 RUN chmod 600 .ssh/id_ed25519
 RUN chmod 644 .ssh/id_ed25519.pub
-RUN chown -R vic:vic .ssh
+RUN chown -R vic:vic .ssh .
 
 FROM personal
 USER vic
-CMD ["ansible-playbook", "$TAGS", "local.yml"]
+CMD ["ansible-playbook", "$TAGS", "$YML"]
 
 

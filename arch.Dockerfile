@@ -12,8 +12,10 @@ RUN pacman -Syu --noconfirm && \
 
 FROM base AS personal
 ARG TAGS
+ARG YML
 RUN useradd -m -G wheel -s /bin/bash vic
 RUN echo "vic ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/vic
+
 RUN mkdir /home/vic/ansible
 WORKDIR /home/vic/ansible
 COPY . .
@@ -24,5 +26,5 @@ RUN chown -R vic:vic .ssh
 
 FROM personal
 USER vic
-CMD ["ansible-playbook", "$TAGS", "local.yml"]
+CMD ["ansible-playbook", "$TAGS", "$YML"]
 

@@ -2,8 +2,10 @@
   vars:
     source_key: "{{ lookup('env', 'HOME') }}/ansible/.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
+    private_playbooks: "git@github.com:victorkamoto/ansible-private.git"
+    environ: "local"
   pre_tasks:
-  - name: Update Apt
+  - name: Update APT
     become: true
     apt:
       force_apt_get: true
@@ -29,6 +31,8 @@
         become_user: vic
     loop:
     - tasks/ssh.yml
+    - tasks/git.yml
+    - tasks/private-tasks.yml
   
         
     
