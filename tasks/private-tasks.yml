@@ -1,13 +1,20 @@
 
+- name: Check if the directory exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/ansible-private"
+  register: dir_to_check
+  tags:
+    - install
+    - core
+
 - name: Clone ansible-private repo
   #  use shell instead of git module because of the private key issue
   shell: git clone "{{ private_playbooks }}" "{{ lookup('env', 'HOME') }}/ansible-private"
-  when: ansible_facts['os_family'] in ['Debian', 'Archlinux']
+  when: ansible_facts['os_family'] in ['Debian', 'Archlinux'] and not (dir_to_check.stat.isdir is defined and dir_to_check.stat.isdir)
   # git:
   #   repo: "{{ private_playbooks }}"
   #   dest: "{{ lookup('env', 'HOME') }}/ansible-private"
   #   accept_hostkey: yes
-  #   key_file: "{{ dest_key }}"
   tags:
     - install
     - core
