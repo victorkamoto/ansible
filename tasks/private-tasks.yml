@@ -1,5 +1,5 @@
 
-- name: Check if the directory exists
+- name: Check ansible-private exists
   stat:
     path: "{{ lookup('env', 'HOME') }}/ansible-private"
   register: dir_to_check
